@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Today</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                   Helvetica, Arial, sans-serif;
+      color: #37352f;
+    }
+
+    #date {
+      font-size: 28px;
+      line-height: 1.25;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    #date sup {
+      font-size: 0.55em;
+      line-height: 0;
+      vertical-align: super;
+      margin-left: 1px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        color: #ffffffcf;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="date"></div>
+
+  <script>
+    function ordinalSuffix(day) {
+      if (day >= 11 && day <= 13) return "th";
+
+      switch (day % 10) {
+        case 1: return "st";
+        case 2: return "nd";
+        case 3: return "rd";
+        default: return "th";
+      }
+    }
+
+    function renderDate() {
+      const now = new Date();
+
+      const weekday = new Intl.DateTimeFormat("en-US", {
+        weekday: "long"
+      }).format(now);
+
+      const month = new Intl.DateTimeFormat("en-US", {
+        month: "long"
+      }).format(now);
+
+      const day = now.getDate();
+      const suffix = ordinalSuffix(day);
+
+      document.getElementById("date").innerHTML =
+        `${weekday}, ${month} ${day}<sup>${suffix}</sup>`;
+    }
+
+    renderDate();
+    setInterval(renderDate, 60000);
+  </script>
+</body>
+</html>
